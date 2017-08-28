@@ -29,6 +29,7 @@ namespace Main
         public DispatcherTimer timer;
         public TextBlock score;
         int game = 0; // 0 pas de jeu en cours 1 jeu en cours
+        int gPause = 0; //0 pas de pause 1 en pause
         public enum Direction
         {
             UP,
@@ -98,6 +99,26 @@ namespace Main
             {
                 startGame();
             }
+            if(e.Key == Key.Space)
+            {
+                if (game != 0) //si une partie est en cours 
+                {
+                    if (gPause == 1)
+                    {
+                        resume();
+                    }
+                    else
+                    {
+                        pause();
+                    }
+                }
+            }
+        }
+
+        private void resume()
+        {
+            timer.Start();
+            gPause = 0;
         }
 
         private void updateGame(object sender, EventArgs e)
@@ -208,6 +229,13 @@ namespace Main
             game = 0;        
             timer.Stop();
             MessageBox.Show("Fin de partie : " + snake.getNbPts() + " points.\n Appuyer sur entrée pour recommencer.");
+        }
+
+        private void pause()
+        {
+            timer.Stop();
+            gPause = 1;
+            MessageBox.Show("Mode pause activé \n Appuyer sur la barre d'espace pour reprendre.");
         }
     }
 }
